@@ -1,6 +1,10 @@
-window.onload = function() {
+window.onload = function() {    
     let firstValue
+    let secondValue
     let selectedOperator
+
+/*const display2 =  document.getElementById("display2")*/
+
     const display = document.getElementById("display")
     const btnMC = document.getElementById("btnMC")
     const btnMMore = document.getElementById("btnMMore")
@@ -28,6 +32,7 @@ window.onload = function() {
     }*/
     flag = 0
     console.dir(display)
+
     const numberOnclick = function(event){
     if(flag == 1){
     display.innerText = event.target.textContent
@@ -36,6 +41,8 @@ window.onload = function() {
     else{
     display.innerText += event.target.textContent
     }
+    /*stringOperation += event.target.textContent
+    display2.innerText += stringOperation*/
     }
     btnNine.onclick = numberOnclick
     btnEight.onclick = numberOnclick
@@ -48,23 +55,25 @@ window.onload = function() {
     btnOne.onclick = numberOnclick
     btnZero.onclick = numberOnclick
     btnPoint.onclick = numberOnclick
+
     btnC.onclick = function(){
     display.innerText = ""
     }
+
     const operatorFunction = function(event){
     firstValue = parseFloat(display.innerText)
     display.innerText = ""
-    selectedOperator = event.target.textContent
+    selectedOperator = event.target.textContent   
     }
+
     btnDiv.onclick = operatorFunction
     btnMult.onclick = operatorFunction
     btnMore.onclick = operatorFunction
     btnLess.onclick = operatorFunction
 
-    
+    let stringOperation;
 
     btnEquals.onclick = function(event){
-
         secondValue = parseFloat(display.innerText)
         const options = {
             baseURL:"http://localhost:3000/",
@@ -72,33 +81,65 @@ window.onload = function() {
             method: "GET",
             headers:{
                 "Content-Type":"application/json",
-
             },
-        }
-        fetch(`http://localhost:3000/getresult/${firstValue}/${secondValue}/${selectedOperator}`, options)
-        .then(res=>res.json())
-        .then((response)=>{
-            console.log(response)
-            display.innerText = response.result
-        }) 
+        }      
+        switch(selectedOperator){
+
+            case '+':
+                     fetch(`http://localhost:3000/suma/${firstValue}/${secondValue}/`, options)
+                     .then(res=>res.json())
+                     .then((response)=>{
+                    console.log(response)
+                    display.innerText = response.result
+                    }) 
+                    break;
+            case '-':
+                    fetch(`http://localhost:3000/resta/${firstValue}/${secondValue}/`, options)
+                    .then(res=>res.json())
+                    .then((response)=>{
+                    console.log(response)
+                    display.innerText = response.result
+                    }) 
+                    break;
+            case '/':
+                    fetch(`http://localhost:3000/division/${firstValue}/${secondValue}/`, options)
+                    .then(res=>res.json())
+                    .then((response)=>{
+                    console.log(response)
+                    display.innerText = response.result
+                    }) 
+                    break;
+            case '*':
+                    fetch(`http://localhost:3000/multiplicacion/${firstValue}/${secondValue}/`, options)
+                    .then(res=>res.json())
+                    .then((response)=>{
+                    console.log(response)
+                    display.innerText = response.result
+                    }) 
+                    break;
+            }
+            console.log("firsValue: ", firstValue)    
+            console.log("secondValue: ", secondValue)
+            console.log("selectedOperator: ", selectedOperator)
+
     flag = 1
     }
 
     btnMLess.onclick = function(event){
-    secondValue = parseFloat(display.innerText)
-    result = result - secondValue
-    display.innerText = result
-    flag = 1
+        secondValue = parseFloat(display.innerText)
+        result = result - secondValue
+        display.innerText = result
+        flag = 1
     }
 
     btnMMore.onclick = function(event){
-    secondValue = parseFloat(display.innerText)
-    result = result + secondValue
-    display.innerText = result
-    flag = 1
+        secondValue = parseFloat(display.innerText)
+        result = result + secondValue
+        display.innerText = result
+        flag = 1
     }
 
     btnMC.onclick = function(event){
-    result = 0
+        result = 0
     }
     }
